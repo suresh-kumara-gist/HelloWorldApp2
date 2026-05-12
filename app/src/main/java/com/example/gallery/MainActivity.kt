@@ -10,7 +10,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            GalleryApp()
+            GalleryTheme {
+                GalleryApp()
+            }
         }
     }
 }
