@@ -1,7 +1,9 @@
 package com.example.gallery
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
@@ -14,15 +16,22 @@ fun VideosScreen(
         columns = GridCells.Fixed(2)
     ) {
 
-        items(items.size) { index ->
+        items(items) { item ->
 
             Column {
 
                 MediaCard(
-                    item = items[index]
-                ) {}
+                    item = item,
+                    selected = false,
+                    onClick = {
+                        // TODO open video player
+                    },
+                    onLongClick = {
+                        // TODO multi-select
+                    }
+                )
 
-                Text(items[index].name)
+                Text(item.name)
             }
         }
     }

@@ -1,8 +1,9 @@
 package com.example.gallery
 
-import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 
 @Composable
 fun PhotosScreen(
@@ -17,10 +18,15 @@ fun PhotosScreen(
         items(items.size) { index ->
 
             MediaCard(
-                item = items[index]
-            ) {
-                onOpen(index)
-            }
+                item = items[index],
+                selected = false,
+                onClick = {
+                    onOpen(index)
+                },
+                onLongClick = {
+
+                }
+            )
         }
     }
 }
