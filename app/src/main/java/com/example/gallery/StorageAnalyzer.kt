@@ -1,9 +1,12 @@
 package com.example.gallery
 
 import android.os.Environment
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import java.io.File
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun StorageAnalyzerScreen() {
@@ -16,12 +19,14 @@ fun StorageAnalyzerScreen() {
     val free =
         root.freeSpace / (1024 * 1024 * 1024)
 
-    Column {
+    Column(
+        modifier = Modifier.padding(16.dp)
+    ) {
 
         Text("Storage Analyzer")
 
-        Text("Total: ${total} GB")
+        Text("Total Storage: ${total} GB")
 
-        Text("Free: ${free} GB")
+        Text("Free Storage: ${free} GB")
     }
 }
