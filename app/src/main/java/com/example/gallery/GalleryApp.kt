@@ -1,13 +1,15 @@
 package com.example.gallery
 
 import android.Manifest
+import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun GalleryApp() {
@@ -18,7 +20,13 @@ fun GalleryApp() {
         MediaRepository(context)
     }
 
-    var tab by remember { mutableStateOf(0) }
+    val viewModel = remember {
+        GalleryViewModel()
+    }
+
+    var tab by remember {
+        mutableStateOf(0)
+    }
 
     var granted by remember {
         mutableStateOf(false)
@@ -36,6 +44,13 @@ fun GalleryApp() {
         mutableStateOf(listOf<MediaFile>())
     }
 
+    val permission =
+        if (Build.VERSION.SDK_INT >= 33) {
+            Manifest.permission.READ_MEDIA_IMAGES
+        } else {
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        }
+
     val launcher =
         rememberLauncherForActivityResult(
             ActivityResultContracts.RequestPermission()
@@ -44,9 +59,7 @@ fun GalleryApp() {
         }
 
     LaunchedEffect(Unit) {
-        launcher.launch(
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
+        launcher.launch(permission)
     }
 
     if (granted) {
@@ -59,7 +72,53 @@ fun GalleryApp() {
         }
     }
 
+    val filteredImages =
+        images.filter {
+
+            it.name.contains(
+                viewModel.searchQuery,
+                ignoreCase = true
+            )
+        }
+
+    val filteredVideos =
+        videos.filter {
+
+            it.name.contains(
+                viewModel.searchQuery,
+                ignoreCase = true
+            )
+        }
+
+    val filteredDocs =
+        docs.filter {
+
+            it.name.contains(
+                viewModel.searchQuery,
+                ignoreCase = true
+            )
+        }
+
     Scaffold(
+
+        topBar = {
+
+            Column {
+
+                Text(
+                    text = "Gallery App",
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.padding(12.dp)
+                )
+
+                GallerySearchBar(
+                    query = viewModel.searchQuery,
+                    onQueryChange = {
+                        viewModel.searchQuery = it
+                    }
+                )
+            }
+        },
 
         bottomBar = {
 
@@ -73,26 +132,36 @@ fun GalleryApp() {
 
     ) { padding ->
 
-        if (!granted) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
 
-            Text("Storage permission required")
+            if (!granted) {
 
-        } else {
-
-            when (tab) {
-
-                0 -> PhotosScreen(
-                    items = images,
-                    onOpen = {}
+                Text(
+                    text = "Storage permission required",
+                    modifier = Modifier.padding(16.dp)
                 )
 
-                1 -> VideosScreen(
-                    items = videos
-                )
+            } else {
 
-                2 -> DocumentsScreen(
-                    items = docs
-                )
+                when (tab) {
+
+                    0 -> PhotosScreen(
+                        items = filteredImages,
+                        onOpen = {}
+                    )
+
+                    1 -> VideosScreen(
+                        items = filteredVideos
+                    )
+
+                    2 -> DocumentsScreen(
+                        items = filteredDocs
+                    )
+                }
             }
         }
     }

@@ -34,7 +34,11 @@ fun GalleryTheme(
     val colors = if (useDarkTheme) DarkColors else LightColors
 
     MaterialTheme(
-        colorScheme = colors,
+        colorScheme =
+            if (useDarkTheme)
+                darkColorScheme()
+            else
+                lightColorScheme(),
         typography = Typography(),
         content = content
     )

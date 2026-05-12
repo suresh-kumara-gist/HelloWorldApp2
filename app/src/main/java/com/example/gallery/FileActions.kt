@@ -18,3 +18,15 @@ fun shareFile(
         Intent.createChooser(intent, "Share")
     )
 }
+
+fun deleteFile(
+    context: Context,
+    uri: Uri
+) {
+
+    context.contentResolver.delete(
+        uri,
+        null,
+        null
+    )
+}
