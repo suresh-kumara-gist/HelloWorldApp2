@@ -1,5 +1,3 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.App" parent="Theme.Material3.DayNight">
-        <!-- Customize your colors here if you want -->
-    </style>
+    <style name="Theme.App" parent="Theme.Material3.DayNight" />
 </resources>
