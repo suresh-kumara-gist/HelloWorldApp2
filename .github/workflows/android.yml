@@ -21,7 +21,7 @@ jobs:
           java-version: 17
 
       - name: Install Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Generate Gradle Wrapper
         run: |
@@ -31,7 +31,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
       - name: Build Debug APK
         run: ./gradlew assembleDebug
